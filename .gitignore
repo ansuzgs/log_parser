@@ -65,5 +65,5 @@ venv.bak/
 Thumbs.db
 
 # Project specific
-*.log
+# *.log
 !fixtures/*.log  # Mantener logs de ejemplo
