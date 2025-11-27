@@ -1,0 +1,14 @@
+# Core dependencies
+click>=8.1.7          # CLI framework
+rich>=13.7.0          # Terminal formatting y tablas
+
+# Development dependencies
+pytest>=7.4.3         # Testing framework
+pytest-cov>=4.1.0     # Coverage reports
+black>=23.12.0        # Code formatter
+# flake8>=6.1.0         # Linter
+flake8        # Linter
+mypy>=1.7.1           # Type checking
+
+# Optional dependencies
+# watchdog>=3.0.0       # Para modo watch (opcional)
