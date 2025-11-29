@@ -114,3 +114,35 @@ class LogAnalyzer:
     def get_unique_ips(self) -> Set[str]:
         """Retorna un set con todas las IPs unicas"""
         return set(e.ip for e in self.logs)
+
+    def filter_by_status(self, status: int) -> Optional[List[LogEntry]]:
+        """Retorna la lista de requests filtrada por status_code"""
+        return [e for e in self.logs if e.status_code == status]
+
+    def filter_by_ip(self, ip: str) -> Optional[List[LogEntry]]:
+        """Retorna la lista de requests filtrada por ip"""
+        return [e for e in self.logs if e.ip == ip]
+
+    def filter_by_method(self, method: str) -> Optional[List[LogEntry]]:
+        """Retorna la lista de requests filtrada por method"""
+        return [e for e in self.logs if e.method == method]
+
+    def filter_by_path(self, path: str) -> Optional[List[LogEntry]]:
+        """Retorna la lista de requests filtrada por path"""
+        return [e for e in self.logs if e.path == path]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
