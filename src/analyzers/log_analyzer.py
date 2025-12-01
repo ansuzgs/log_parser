@@ -131,9 +131,15 @@ class LogAnalyzer:
         """Retorna la lista de requests filtrada por path"""
         return [e for e in self.logs if e.path == path]
 
-
-
-
+    def get_summary(self) -> Dict[str, int | float]:
+        """Retorna el resumen"""
+        return {
+            "total_requests": self.total_requests(),
+            "total_errors": self.total_errors(),
+            "error_rate": self.error_rate(),
+            "unique_ips": self.unique_ips_count(),
+            "total_bytes": self.total_bytes_transferred()
+        }
 
 
 

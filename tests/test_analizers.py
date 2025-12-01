@@ -493,3 +493,76 @@ class TestFiltering:
 
         assert len(filtered) == 3
         assert all(entry.path == "/index.html" for entry in filtered)
+
+
+# ============================================================================
+# FASE 12: Tests de Resumen/Summary
+# ============================================================================
+
+class TestSummary:
+    """Tests para método de resumen general."""
+    
+    def test_get_summary(self, analyzer):
+        """Test 41: Retorna un resumen completo de estadísticas."""
+        summary = analyzer.get_summary()
+        
+        assert isinstance(summary, dict)
+        assert "total_requests" in summary
+        assert "total_errors" in summary
+        assert "error_rate" in summary
+        assert "unique_ips" in summary
+        assert "total_bytes" in summary
+        
+        assert summary["total_requests"] == 10
+        assert summary["total_errors"] == 3
+        assert summary["unique_ips"] == 6
+    
+    def test_summary_empty(self, empty_analyzer):
+        """Test 42: Resumen con analyzer vacío tiene valores en cero."""
+        summary = empty_analyzer.get_summary()
+        
+        assert summary["total_requests"] == 0
+        assert summary["total_errors"] == 0
+        assert summary["error_rate"] == 0.0
+
+
+# ============================================================================
+# FASE 13: Tests de Edge Cases
+# ============================================================================
+
+class TestEdgeCases:
+    """Tests para casos especiales y edge cases."""
+    
+    def test_single_entry(self):
+        """Test 43: Analyzer funciona con una sola entrada."""
+        entry = LogEntry("192.168.1.1", datetime.now(), "GET", "/", 200, 100)
+        analyzer = LogAnalyzer([entry])
+        
+        assert analyzer.total_requests() == 1
+        assert analyzer.unique_ips_count() == 1
+    
+    def test_all_same_ip(self):
+        """Test 44: Analyzer funciona cuando todas las requests son de la misma IP."""
+        entries = [
+            LogEntry("192.168.1.1", datetime.now(), "GET", f"/page{i}", 200, 100)
+            for i in range(5)
+        ]
+        analyzer = LogAnalyzer(entries)
+        
+        assert analyzer.unique_ips_count() == 1
+        top_ips = analyzer.top_ips()
+        assert top_ips[0][1] == 5
+    
+    def test_all_errors(self):
+        """Test 45: Analyzer funciona cuando todas las respuestas son errores."""
+        entries = [
+            LogEntry("192.168.1.1", datetime.now(), "GET", "/", 404, 100),
+            LogEntry("192.168.1.2", datetime.now(), "GET", "/", 500, 100),
+        ]
+        analyzer = LogAnalyzer(entries)
+        
+        assert analyzer.error_rate() == 1.0  # 100% errores
+        assert analyzer.total_success() == 0
+
+
+
